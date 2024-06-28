@@ -3,7 +3,10 @@ import { getAllBlogs } from '@/lib/notion'
 
 
 
-const SingleBlog = async({params}) => {
+const SingleBlog = async({params , searchParams}) => {
+    // console.log('Here is the serachParams:', searchParams)
+    const author = searchParams.author
+    const createdAt = searchParams.createdAt
     // doubt why cant I use the function in order to get the id 
 
     //find the blog from all the blogs which have the id as that of the id form the params
@@ -18,6 +21,12 @@ const SingleBlog = async({params}) => {
         </div>
         <div>
             {blog.content}
+        </div>
+        <div>
+            Author is:{author}
+        </div>
+        <div>
+            Created At:{createdAt}
         </div>
     </>
   )
