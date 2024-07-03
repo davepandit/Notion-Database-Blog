@@ -17,24 +17,24 @@ const SingleBlog = async({params , searchParams}) => {
     
     // const blog = blogs.find((blog)=> blog.id == params.id)
     // console.log('Here is the blog that we have been searching for:🚀', blog)
-    console.log('Here are all the blogs:',allblogs)
+    // console.log('Here are all the blogs:',allblogs)
 
     const searchId = '506212c8-8ebb-481d-aeee-3198017cab83';
 
     // Use the find method to get the object with the matching ID
     const foundBlog = allblogs.find(blog => blog.id === params.id);
 
-    if (foundBlog) {
-    console.log('Found Blog❤️:', foundBlog);
-    } else {
-    console.log('Blog not found');
-    }
+    // if (foundBlog) {
+    // console.log('Found Blog❤️:', foundBlog);
+    // } else {
+    // console.log('Blog not found');
+    // }
 
 
 
     //get the block data basically ek page ke multiple blocks hote hai so basiscally uahan par hum blocks ko fetch karne ka kaam karenge
     const blocks = await getPageBlocks(params.id)
-    console.log('Here is all the blocks data:😎', JSON.stringify(blocks))
+    // console.log('Here is all the blocks data:😎', JSON.stringify(blocks))
 
   return (
     <>
