@@ -1,6 +1,7 @@
 import React from 'react'
 import { getAllBlogs , getPageBlocks } from '@/lib/notion'
 import Image from 'next/image';
+import Button from '@/components/Button';
 
 
 
@@ -33,7 +34,7 @@ const SingleBlog = async({params , searchParams}) => {
 
     //get the block data basically ek page ke multiple blocks hote hai so basiscally uahan par hum blocks ko fetch karne ka kaam karenge
     const blocks = await getPageBlocks(params.id)
-    // console.log('Here is all the blocks data:😎', JSON.stringify(blocks))
+    console.log('Here is all the blocks data:😎', JSON.stringify(blocks))
 
   return (
     <>
@@ -50,48 +51,64 @@ const SingleBlog = async({params , searchParams}) => {
         <div>
             Created At:{createdAt}
         </div> */}
-        <div>
-            {foundBlog.icon}
-        </div>
-        <div>
-            <img src={foundBlog.coverImage} alt="image" />
-        </div>
-    
-        <div>
-            {
-                // the blocks which we got is basically an array so map through them and render them 
-                blocks.map((block)=>{
-                    switch (block.type) {
-                        case 'paragraph':
-                          return <p key={block.id}>{block.paragraph.rich_text[0]?.text.content}</p>;
-                        case 'heading_1':
-                          return <h1 key={block.id}>{block.heading_1.rich_text[0]?.text.content}</h1>;
-                        case 'heading_2':
-                          return <h2 key={block.id}>{block.heading_2.rich_text[0]?.text.content}</h2>;
-                        case 'heading_3':
-                          return <h3 key={block.id}>{block.heading_3.rich_text[0]?.text.content}</h3>;
-                        case 'image':
-                          const imageUrl = block.image.type === 'external' 
-                            ? block.image.external.url 
-                            : block.image.file.url;
-                          return (
-                            <img 
-                              key={block.id} 
-                              src={imageUrl} 
-                              alt={block.image.caption[0]?.plain_text || 'Notion Image'} 
-                            />
-                          );
-                        default:
-                          return <div key={block.id}>Unsupported block type: {block.type}</div>;
-                    }
-                })
-            }
-        </div>
-        <div>
-            Author is:{author}
-        </div>
-        <div>
-            Created At:{createdAt}
+        <div className='flex flex-col items-center justify-center gap-5 max-w-[315px] md:max-w-[500px] lg:max-w-[900px] mx-auto mb-28 mt-11'>
+          
+          <div>
+              <img src={foundBlog.coverImage} alt="image" className='w-[500px] h-[300px] rounded-lg'/>
+          </div>
+          <div className='text-xl font-bold'>
+            <span>{foundBlog.icon}</span>
+            <span className='bg-yellow-200'>{foundBlog.title}</span>
+          </div>
+          <div>
+              {
+                  // the blocks which we got is basically an array so map through them and render them 
+                  blocks.map((block)=>{
+                      switch (block.type) {
+                          case 'paragraph':
+                            return <p key={block.id} className='mt-3'>{block.paragraph.rich_text[0]?.text.content}</p>;
+                          case 'heading_1':
+                            return <h1 key={block.id} className='mt-3'>{block.heading_1.rich_text[0]?.text.content}</h1>;
+                          case 'code':
+                            return (
+                              <div className='bg-gray-200 text-orange-500 rounded-lg pl-11 pr-11 pt-2 pb-2 mt-3'>
+                                <pre>
+                                  <code>
+                                    {block.code.rich_text[0]?.plain_text}
+                                  </code>
+                                </pre>
+                              </div>
+                            )
+                          case 'heading_2':
+                            return <h2 key={block.id} className='mt-3'>{block.heading_2.rich_text[0]?.text.content}</h2>;
+                          case 'heading_3':
+                            return <h3 key={block.id} className='mt-3'>{block.heading_3.rich_text[0]?.text.content}</h3>;
+                          case 'image':
+                            const imageUrl = block.image.type === 'external' 
+                              ? block.image.external.url 
+                              : block.image.file.url;
+                            return (
+                              <img 
+                              className='w-[500px] h-[300px] rounded-lg mt-3'
+                                key={block.id} 
+                                src={imageUrl} 
+                                alt={block.image.caption[0]?.plain_text || 'Notion Image'} 
+                              />
+                            );
+                          default:
+                            return <div key={block.id}>Unsupported block type: {block.type}</div>;
+                      }
+                  })
+              }
+          </div>
+          <div className='font-semibold'>
+              Author is: <span className='font-bold bg-yellow-200'>{author}</span>
+          </div>
+          <div className='font-semibold'>
+              Created At:{createdAt}
+          </div>
+          {/* here comes the button component not writing it here because it needs to be a client component  */}
+          <Button />
         </div>
     </>
   )
